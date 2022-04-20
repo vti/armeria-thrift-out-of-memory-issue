@@ -1,0 +1,21 @@
+#!/bin/bash
+
+BINDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+BASE=$( readlink -e "$BINDIR/../" )
+NAME="$( basename "${BASH_SOURCE[0]}" )"
+VERSION=1.0
+
+EXE="$BASE/lib/$NAME-$VERSION-SNAPSHOT.jar"
+
+JAVA_OPTS="${JAVA_OPTS:--Xms1G -Xmx1G}"
+
+if [ ! -e "$EXE" ]; then
+    EXE="$BASE/target/$NAME-$VERSION-SNAPSHOT.jar"
+fi
+
+if [ ! -e "$EXE" ]; then
+    echo 'No executable present'
+    exit 255
+fi
+
+java $JAVA_OPTS -jar $EXE "$@"
